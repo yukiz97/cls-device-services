@@ -1,11 +1,11 @@
 package models
 
-//SearchCustomer struct for search customer
+//SearchDevice struct for search device
 type SearchDevice struct {
 	Keyword string `json:"keyword"`
 }
 
-//Device struct present database device talbe
+//Device struct present database device table
 type Device struct {
 	ID                  int    `json:"id"`
 	IDProduct           int    `json:"idproduct"`

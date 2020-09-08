@@ -28,7 +28,7 @@ func InsertDevice(modelDevice models.Device) int64 {
 	}
 	result, errInsert := insertQuery.Exec(
 		modelDevice.IDProduct,
-		nil,
+		modelDevice.IDCustomer,
 		modelDevice.DeviceCode,
 		modelDevice.DeviceSerial,
 		modelDevice.BuyDate,
@@ -50,7 +50,7 @@ func UpdateDevice(modelDevice models.Device) bool {
 	isUpdated := true
 	db := dbcon.InitDBMySQL(strDBConnect)
 	defer db.Close()
-	updateQuery, err := db.Prepare("UPDATE Device SET " +
+	updateQuery, err := db.Prepare("UPDATE device SET " +
 		"" + mapDeviceField["idproduct"] + " = ?, " +
 		"" + mapDeviceField["idcustomer"] + " = ?, " +
 		"" + mapDeviceField["code"] + " = ?, " +
@@ -91,7 +91,7 @@ func DeleteDevice(idDevice int) bool {
 	isDeleted := true
 	db := dbcon.InitDBMySQL(strDBConnect)
 	defer db.Close()
-	deleteQuery, err := db.Prepare("DELETE FROM Device WHERE " + mapDeviceField["id"] + " = ?")
+	deleteQuery, err := db.Prepare("DELETE FROM device WHERE " + mapDeviceField["id"] + " = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -118,7 +118,7 @@ func GetDeviceList(keyWord string) []models.Device {
 	db := dbcon.InitDBMySQL(strDBConnect)
 	defer db.Close()
 
-	selectQuery, err := db.Prepare("SELECT * FROM Device WHERE " + mapDeviceField["code"] + " LIKE ?")
+	selectQuery, err := db.Prepare("SELECT * FROM device WHERE " + mapDeviceField["code"] + " LIKE ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -149,14 +149,14 @@ func GetDeviceList(keyWord string) []models.Device {
 	return listDevice
 }
 
-//GetDeviceByID get device by customer id
+//GetDeviceByID get device by device id
 func GetDeviceByID(idDevice int) models.Device {
 	var modelDevice models.Device
 
 	db := dbcon.InitDBMySQL(strDBConnect)
 	defer db.Close()
 
-	selectQuery, err := db.Prepare("SELECT * FROM Device WHERE " + mapDeviceField["id"] + " = ?")
+	selectQuery, err := db.Prepare("SELECT * FROM device WHERE " + mapDeviceField["id"] + " = ?")
 	if err != nil {
 		panic(err.Error())
 	}
