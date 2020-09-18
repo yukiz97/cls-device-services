@@ -17,3 +17,23 @@ type Device struct {
 	GuaranteeYears      uint8  `json:"guaranteeexpireyears"`
 	CreateDate          string `json:"createdate"`
 }
+
+type DeviceWithAdditionalInfo struct {
+	Device
+	License DeviceLicenseSimplifyInfo `json:"license"`
+	Customer DeviceCustomerSimplifyInfo `json:"customer"`
+}
+
+type DeviceLicenseSimplifyInfo struct {
+	ID          int    `json:"id"`
+	Code        string `json:"code"`
+	ProvideDate string `json:"providedate"`
+	ExpireDate  string `json:"expiredate"`
+	CreateDate  string `json:"createdate"`
+}
+
+type DeviceCustomerSimplifyInfo struct {
+	ID      int    `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+}

@@ -4,5 +4,7 @@ github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/mitchellh/mapstructure v1.3.3 h1:SzB1nHZ2Xi+17FP0zVQBHIZqvwRN9408fJO8h+eeNA8=
 github.com/mitchellh/mapstructure v1.3.3/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+github.com/yukiz97/cls-general-services v0.0.0-20200908062116-9a71d3afa1c0 h1:iWkV6a3+1WlhFPFp6JW+xx/s/dH6fg6tCbLp5AN+MHU=
+github.com/yukiz97/cls-general-services v0.0.0-20200908062116-9a71d3afa1c0/go.mod h1:WyGYMRdf1onTawENkefaLPvjkZpRYM0VqFl0Q9v0acw=
 github.com/yukiz97/utils v0.0.0-20200903095624-4eebf3cd21fa h1:9NfsDpnydQX+hQAZnzFlR7iUuMaG6G2XtGX4AH7yuW0=
 github.com/yukiz97/utils v0.0.0-20200903095624-4eebf3cd21fa/go.mod h1:7YpBTt2D6uczi36OzHhxzzpQ6oh2i+P5SHBkbynvrSc=

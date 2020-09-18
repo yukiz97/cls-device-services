@@ -51,9 +51,6 @@ func UpdateDevice(modelDevice models.Device) bool {
 	db := dbcon.InitDBMySQL(strDBConnect)
 	defer db.Close()
 	updateQuery, err := db.Prepare("UPDATE device SET " +
-		"" + mapDeviceField["idproduct"] + " = ?, " +
-		"" + mapDeviceField["idcustomer"] + " = ?, " +
-		"" + mapDeviceField["code"] + " = ?, " +
 		"" + mapDeviceField["serial"] + " = ?, " +
 		"" + mapDeviceField["buydate"] + " = ?, " +
 		"" + mapDeviceField["expiredate"] + " = ?, " +
@@ -63,9 +60,6 @@ func UpdateDevice(modelDevice models.Device) bool {
 		panic(err.Error())
 	}
 	result, errUpdate := updateQuery.Exec(
-		modelDevice.IDProduct,
-		modelDevice.IDCustomer,
-		modelDevice.DeviceCode,
 		modelDevice.DeviceSerial,
 		modelDevice.BuyDate,
 		modelDevice.GuaranteeExpireDate,
@@ -111,8 +105,9 @@ func DeleteDevice(idDevice int) bool {
 }
 
 //GetDeviceList get device list by keyword
-func GetDeviceList(keyWord string) []models.Device {
+func GetDeviceList(keyWord string) ([]models.Device,[]int) {
 	listDevice := make([]models.Device, 0)
+	listID := make([]int, 0)
 	keyWord = "%" + keyWord + "%"
 
 	db := dbcon.InitDBMySQL(strDBConnect)
@@ -144,9 +139,10 @@ func GetDeviceList(keyWord string) []models.Device {
 		modelDevice.GuaranteeExpireDate = date.FormatTimeToString(expireDate, date.Format2)
 		modelDevice.CreateDate = date.FormatTimeToString(createDate, date.Format1)
 		listDevice = append(listDevice, modelDevice)
+		listID = append(listID,modelDevice.ID)
 	}
 
-	return listDevice
+	return listDevice, listID
 }
 
 //GetDeviceByID get device by device id

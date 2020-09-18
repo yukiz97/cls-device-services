@@ -74,16 +74,7 @@ func updateDevice(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	if modelInput.IDProduct == 0 {
-		restapi.RespondWithError(response, http.StatusBadRequest, "`idproduct` must be greater than 0")
-		return
-	} else if modelInput.IDCustomer == 0 {
-		restapi.RespondWithError(response, http.StatusBadRequest, "`idcustomer` must be greater than 0")
-		return
-	} else if modelInput.DeviceCode == "" {
-		restapi.RespondWithError(response, http.StatusBadRequest, "`devicecode` must not be empty")
-		return
-	} else if modelInput.DeviceSerial == "" {
+	if modelInput.DeviceSerial == "" {
 		restapi.RespondWithError(response, http.StatusBadRequest, "`deviceserial` must not be empty")
 		return
 	} else if modelInput.BuyDate == "" {
@@ -126,9 +117,36 @@ func deleteDevice(response http.ResponseWriter, request *http.Request) {
 }
 
 func getDeviceList(response http.ResponseWriter, _ *http.Request) {
-	listDevice := lcservices.GetDeviceList("")
+	listDevice,_ := lcservices.GetDeviceList("")
 
 	restapi.RespondWithJSON(response, http.StatusOK, listDevice)
+}
+
+func getDeviceListWithAdditionalInfo(response http.ResponseWriter, _ *http.Request) {
+	listDevices, arrId := lcservices.GetDeviceList("")
+	listDevicesReturn := make([]models.DeviceWithAdditionalInfo,0)
+
+	if len(listDevices) > 0 {
+		mapLicenseInfo := lcservices.GetDeviceLicenseSimplifyInfo(arrId)
+		mapCustomerInfo := lcservices.GetDeviceCustomerSimplifyInfo(arrId)
+		for _, model := range listDevices {
+			var license models.DeviceLicenseSimplifyInfo
+			var Customer models.DeviceCustomerSimplifyInfo
+
+			if _, ok := mapLicenseInfo[model.ID]; ok {
+				license = mapLicenseInfo[model.ID]
+			}
+
+			if _, ok := mapCustomerInfo[model.ID]; ok {
+				Customer = mapCustomerInfo[model.ID]
+			}
+
+			modelReturn := models.DeviceWithAdditionalInfo{Device: model, License: license,Customer: Customer}
+			listDevicesReturn = append(listDevicesReturn, modelReturn)
+		}
+	}
+
+	restapi.RespondWithJSON(response, http.StatusOK, listDevicesReturn)
 }
 
 func getDevice(response http.ResponseWriter, request *http.Request) {
@@ -164,7 +182,7 @@ func searchDeviceList(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	listDevice := lcservices.GetDeviceList(modelInput.Keyword)
+	listDevice,_ := lcservices.GetDeviceList(modelInput.Keyword)
 
 	restapi.RespondWithJSON(response, http.StatusOK, listDevice)
 }
@@ -175,6 +193,7 @@ func InitRestfulAPIServices(listenPort int) {
 
 	router.HandleFunc("/", home)
 	router.HandleFunc("/getDeviceList/", getDeviceList).Methods("GET")
+	router.HandleFunc("/getDeviceListWithAdditionalInfo/", getDeviceListWithAdditionalInfo).Methods("GET")
 	router.HandleFunc("/getDevice/id/{id}", getDevice).Methods("GET")
 
 	router.HandleFunc("/insertDevice/", insertDevice).Methods("POST")

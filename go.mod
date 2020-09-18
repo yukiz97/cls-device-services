@@ -7,5 +7,6 @@ replace github.com/yukiz97/utils => D:\DevApps\_Workspace\Golang\ngn_workspace\s
 require (
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/mapstructure v1.3.3
+	github.com/yukiz97/cls-general-services v0.0.0-20200908062116-9a71d3afa1c0
 	github.com/yukiz97/utils v0.0.0-20200903095624-4eebf3cd21fa
 )
